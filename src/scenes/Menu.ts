@@ -1,5 +1,5 @@
 import DisplayContainer from "../components/DisplayContainer.ts";
-import { Sprite } from "pixi.js";
+import {Graphics, Sprite} from "pixi.js";
 import DisplayContainerOptions from "../interfaces/DisplayContainerOptions.ts";
 
 export default class Menu extends DisplayContainer
@@ -60,7 +60,7 @@ export default class Menu extends DisplayContainer
 
     private createBackground()
     {
-        this.bg = Sprite.from("bg_main");
+        this.bg = Sprite.from("menuBg");
         this.addChild(this.bg);
     }
 
@@ -100,6 +100,7 @@ export default class Menu extends DisplayContainer
 
     public override create(showAfterCreate:boolean=true):void
     {
+        this.createBackground();
         if(showAfterCreate)
         {
             this.show();

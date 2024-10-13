@@ -26,6 +26,7 @@ export default class DisplayContainer extends Container implements IDisplayConta
     {
         super();
         this.label = "DisplayContainer";
+        this.visible = false;
     }
 
     //--------------------------------------------------------------------------

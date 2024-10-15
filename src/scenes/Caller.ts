@@ -65,7 +65,7 @@ export default class Caller extends DisplayContainer
         this.pullBtn.pivot.set(0.5);
         this.pullBtn.x = this.model.centerX;
         this.pullBtn.y = this.model.stageHeight*0.35;
-        let pullText = new Text({ text: "Pull", style: { fontFamily:"bingo", fontSize: 48, fill: "0x000000" } });
+        let pullText = new Text({ text: "Call", style: { fontFamily:"bingo", fontSize: 48, fill: "0x000000" } });
         pullText.anchor.set(0.5);
         this.pullBtn.addChild(pullText);
         this.addChild(this.pullBtn);

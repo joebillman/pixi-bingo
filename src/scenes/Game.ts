@@ -67,7 +67,11 @@ export default class Game extends DisplayContainer
         else
         {
             desiredWidth = this.model.stageWidth * 0.96;
-            desiredHeight = desiredHeight * widthToHeightRatio;
+            desiredHeight = desiredWidth * widthToHeightRatio;
+            if(this.model.stageHeight > this.model.stageWidth)
+            {
+                desiredHeight += 150;
+            }
             this.card = new Graphics();
             this.card.roundRect(0, 0, desiredWidth, desiredHeight, 16);
             this.card.fill(this.getRandomHexColor());

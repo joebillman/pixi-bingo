@@ -1,12 +1,16 @@
 import { Application, Assets } from 'pixi.js';
 import AppModel from "../models/AppModel.ts";
 import Menu from "../scenes/Menu.ts";
+import Game from "../scenes/Game.ts";
+import Caller from "../scenes/Caller.ts";
 
 export default class PixiBingo
 {
     private ROOT_ASSETS_PATH = "/assets";
 
     private app:Application;
+    private caller:Caller;
+    private game:Game;
     private menu:Menu;
     private model:AppModel;
 
@@ -25,8 +29,7 @@ export default class PixiBingo
         const pixiAppConfig = {
             antialias: true,
             background: "#000000",
-            width: 1366,
-            height: 768,
+            resizeTo: window,
             canvas: document.getElementById('pixi-canvas') as HTMLCanvasElement,
             resolution: window.devicePixelRatio || 1,
             autoDensity: true,
@@ -34,17 +37,54 @@ export default class PixiBingo
         this.app = new Application();
         this.app.stage.label = "Marking Activity";
         await this.app.init(pixiAppConfig);
+        this.model.app = this.app;
+    }
+
+    private createCaller():void
+    {
+        this.caller = new Caller();
+        this.app.stage.addChild(this.caller);
+    }
+
+    private createGame():void
+    {
+        this.game = new Game();
+        this.app.stage.addChild(this.game);
     }
 
     private createMenu():void
     {
         this.menu = new Menu();
+        this.menu.addListener("play", this.onPlay);
+        this.menu.addListener("caller", this.onCaller);
         this.app.stage.addChild(this.menu);
+    }
+
+    private destroyMenu():void
+    {
+        if(this.menu)
+        {
+            this.menu.destroy();
+            this.app.stage.removeChild(this.menu);
+            this.menu = null;
+        }
     }
 
     private onLoadProgress = (progress:Number):void =>
     {
         console.log("onLoadProgress: "+progress+"%");
+    }
+
+    private onCaller = ():void =>
+    {
+        this.destroyMenu();
+        this.createCaller();
+    }
+
+    private onPlay = ():void =>
+    {
+        this.destroyMenu();
+        this.createGame();
     }
 
     private async preloadAssets():Promise<void>
@@ -55,7 +95,11 @@ export default class PixiBingo
                 src: `${this.ROOT_ASSETS_PATH}/img/menu-bg.jpg`
             },
             {
-                alias:"sweaterschoolreg",
+                alias: "spritesheet",
+                src: `${this.ROOT_ASSETS_PATH}/img/pixi-bingo.json`
+            },
+            {
+                alias:"bingo",
                 src:`${this.ROOT_ASSETS_PATH}/fonts/bingo.ttf`
             },
         ];

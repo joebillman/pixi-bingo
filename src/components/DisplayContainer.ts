@@ -46,7 +46,23 @@ export default class DisplayContainer extends Container implements IDisplayConta
 
     public destroy():void
     {
-
+        let curChild: Container;
+        const len = this.children.length;
+        for (let i: number = 0; i < len; i++) {
+            curChild = this.getChildAt(0);
+            if (curChild.destroy != undefined) {
+                curChild.destroy();
+            }
+            if (curChild.removeAllListeners != undefined) {
+                curChild.removeAllListeners();
+            }
+            if (curChild.removeChildren != undefined) {
+                curChild.removeChildren();
+            }
+            curChild = null;
+        }
+        this.removeAllListeners();
+        this.removeChildren();
     }
 
     public disable():void

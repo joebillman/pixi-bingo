@@ -3,6 +3,7 @@ import AppModel from "../models/AppModel.ts";
 import Menu from "../scenes/Menu.ts";
 import Game from "../scenes/Game.ts";
 import Caller from "../scenes/Caller.ts";
+import {Viewport} from "pixi-viewport";
 
 export default class PixiBingo
 {
@@ -13,12 +14,14 @@ export default class PixiBingo
     private game:Game;
     private menu:Menu;
     private model:AppModel;
+    private viewport:Viewport;
 
     constructor()
     {
         this.model = AppModel.getInstance();
         this.createApp().then(() => {
             this.preloadAssets().then(() => {
+                this.createViewport();
                 this.createMenu();
             });
         });
@@ -49,7 +52,7 @@ export default class PixiBingo
     private createGame():void
     {
         this.game = new Game();
-        this.app.stage.addChild(this.game);
+        this.viewport.addChild(this.game);
     }
 
     private createMenu():void
@@ -57,7 +60,20 @@ export default class PixiBingo
         this.menu = new Menu();
         this.menu.addListener("play", this.onPlay);
         this.menu.addListener("caller", this.onCaller);
-        this.app.stage.addChild(this.menu);
+        this.viewport.addChild(this.menu);
+    }
+
+    private createViewport():void
+    {
+        this.viewport = new Viewport({
+            screenWidth: this.model.stageWidth,
+            screenHeight: this.model.stageHeight,
+            worldWidth: this.model.stageWidth,
+            worldHeight: this.model.stageHeight,
+            events: this.app.renderer.events
+        });
+        this.app.stage.addChild(this.viewport);
+        this.viewport.drag().pinch().wheel().decelerate();
     }
 
     private destroyMenu():void

@@ -7,6 +7,19 @@ export default class AppModel
 
     private static _instance:AppModel = new AppModel();
 
+    public get assetScale():number
+    {
+        const curScaleW = this.stageWidth / 1366;
+        const curScaleH = this.stageHeight / 768;
+        const smallerScale = Math.min(curScaleW, curScaleH);
+        debugger;
+        if(smallerScale > 1)
+        {
+            return 1;
+        }
+        return smallerScale;
+    }
+
     public get centerX():number
     {
         return this.stageWidth / 2;

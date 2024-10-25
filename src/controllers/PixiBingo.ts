@@ -65,15 +65,13 @@ export default class PixiBingo
 
     private createViewport():void
     {
-        this.viewport = new Viewport({
-            screenWidth: this.model.stageWidth,
-            screenHeight: this.model.stageHeight,
-            worldWidth: this.model.stageWidth,
-            worldHeight: this.model.stageHeight,
-            events: this.app.renderer.events
-        });
+        this.viewport = new Viewport({events: this.app.renderer.events});
+        this.viewport.clampZoom({maxScale: 1.5, minScale: 0.5});
         this.app.stage.addChild(this.viewport);
-        this.viewport.drag().pinch().wheel().decelerate();
+        this.viewport.drag();
+        this.viewport.pinch();
+        this.viewport.wheel();
+        this.viewport.decelerate();
     }
 
     private destroyMenu():void

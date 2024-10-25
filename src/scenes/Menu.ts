@@ -65,14 +65,6 @@ export default class Menu extends DisplayContainer
         this.bg.anchor.set(0.5);
         this.bg.x = this.model.centerX;
         this.bg.y = this.model.centerY;
-        if(this.model.stageWidth > this.model.stageHeight)
-        {
-            this.bg.scale.set(this.model.stageWidth / this.bg.width);
-        }
-        else
-        {
-            this.bg.scale.set(this.model.stageHeight / this.bg.height);
-        }
         this.addChild(this.bg);
     }
 
@@ -98,6 +90,7 @@ export default class Menu extends DisplayContainer
             const desiredScale = desiredHeight / playBtn.height;
             playBtn.scale.set(desiredScale);
         }
+        //playBtn.scale.set(this.model.assetScale);
         playBtn.x = this.model.centerX;
         playBtn.y = this.logoBottom.y + this.logoBottom.height / 2 + playBtn.height / 2 + 20;
         this.addChild(playBtn);
